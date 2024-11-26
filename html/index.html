@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Acceso RFID</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Fondo azul claro */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff; /* Fondo blanco del contenedor */
+            border: 2px solid #1e90ff; /* Borde azul */
+            border-radius: 10px; /* Bordes redondeados */
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+        }
+
+        .title {
+            background-color: #1e90ff; /* Azul brillante */
+            color: white; /* Texto blanco */
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            display: block;
+            background-color: #1e90ff; /* Azul brillante */
+            color: white; /* Texto blanco */
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #4682b4; /* Azul más oscuro al pasar el cursor */
+        }
+
+        a:active {
+            background-color: #5a9bd6; /* Azul más claro al hacer clic */
+        }
+
+        /* Estilos para la previsualización de la cámara */
+        .camera-preview {
+            margin-top: 20px;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Control de Acceso RFID</h1>
+        </div>
+        <a href="../php/captura.php">Captura de Datos</a>
+        <a href="../php/modo_acceso.php">Modo de Acceso</a>
+
+        <!-- Previsualización de la cámara -->
+        <div class="camera-preview">
+            <h3>Vista de la cámara</h3>
+            <video id="video" autoplay></video>
+        </div>
+    </div>
+
+    <script>
+
+        // Acceder a la cámara de la laptop
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                const videoElement = document.getElementById('video');
+                videoElement.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.log('Error al acceder a la cámara:', error);
+            });
+
+        // Configuración del cliente WebSocket
+        const socket = new WebSocket('ws://<IP_DE_ESP32>:81');
+            
+            socket.onopen = () => {
+                console.log('Conectado al WebSocket');
+            };
+
+            socket.onmessage = (event) => {
+                console.log('Mensaje recibido:', event.data);
+                if (event.data === 'parpadearCamara') {
+                    parpadearCámara();
+                }
+            };
+
+            socket.onerror = (error) => {
+                console.error('Error en WebSocket:', error);
+            };
+
+            socket.onclose = () => {
+                console.log('WebSocket cerrado');
+            };
+
+            // Función para parpadear la cámara
+            function parpadearCámara() {
+                const videoElement = document.getElementById('video');
+                videoElement.style.opacity = 0; // Hacer invisible la cámara
+                setTimeout(() => {
+                    videoElement.style.opacity = 1; // Volver a hacer visible la cámara
+                }, 200); // El parpadeo dura 200ms
+            }
+
+    </script>
+</body>
+</html>

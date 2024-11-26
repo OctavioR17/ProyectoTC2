@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario RFID</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Fondo azul claro */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff; /* Fondo blanco del formulario */
+            border: 2px solid #1e90ff; /* Borde azul */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #1e90ff; /* Borde azul */
+            border-radius: 5px; /* Bordes redondeados */
+            outline: none;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4682b4; /* Azul más oscuro al enfocar */
+            box-shadow: 0 0 5px rgba(70, 130, 180, 0.5); /* Efecto de luz */
+        }
+
+        input[type="submit"] {
+            background-color: #1e90ff; /* Azul brillante */
+            color: #ffffff; /* Texto blanco */
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px; /* Bordes redondeados */
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4682b4; /* Azul más oscuro al pasar el cursor */
+        }
+
+        input[type="submit"]:active {
+            background-color: #5a9bd6; /* Azul más claro al hacer clic */
+        }
+    </style>
+</head>
+<body>
+    <form action="../php/registro_date.php" method="POST">
+        <label for="tarjeta">RFID_tarjeta:</label><br>
+        <input type="text" id="tarjeta" name="tarjeta" placeholder="Ingresa tu tarjeta"><br>
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>
